@@ -1,55 +1,41 @@
 import React, {Component} from "react";
+import * as actions from "../redux/actions"
+
 export default class App extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            chooseValue: 1,
-            count:1
-        }
-    }
-
     increment = () =>{
-        const number = this.state.chooseValue;
-        const count = this.state.count;
-        this.setState({count:count+number});
+        const number = this.select.value*1;
+        console.log(number);
+        this.props.store.dispatch(actions.increment(number));
     }
 
     decrement = () =>{
-        const number = this.state.chooseValue;
-        const count = this.state.count;
-        this.setState({count:count-number});
+        const number = this.select.value*1;
+        this.props.store.dispatch(actions.decrement(number));
     }
 
     incrementIfOdd = () =>{
-        const number = this.state.chooseValue;
-        const count = this.state.count;
+        const number = this.select.value*1;
+        const count = this.props.store.getState();
         if (count%2===1) {
-            this.setState({count:count+number});
+            this.props.store.dispatch(actions.increment(number));
         }
     }
 
     incrementAsync = () =>{
-        const number = this.state.chooseValue;
-        const count = this.state.count;
+        const number = this.select.value*1;
         setTimeout(() =>{
-            this.setState({count:count+number})
+            this.props.store.dispatch(actions.increment(number));
         },1000)
     }
 
-    handleChange = (event) =>{
-        const chooseValue = event.target.value*1;
-        this.setState({chooseValue});
-    }
-
     render() {
-        const {count,chooseValue} = this.state;
+        const count = this.props.store.getState();
         return (
             <div>
                 <p>click {count} times</p>
                 <div>
-                    {/*<select ref={select => this.select = select}>*/}
-                    <select value={chooseValue} onChange={this.handleChange}>
+                    <select ref={select => this.select = select}>
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
